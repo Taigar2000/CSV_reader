@@ -549,9 +549,36 @@ namespace GerasimenkoER_KDZ3_v2
             (new Form1()).ShowDialog(new Form1());
         }
 
+        /// <summary>
+        /// Add row
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try { 
+                dataGridView1.Rows.Add();
+            }
+            catch(System.InvalidOperationException ex)
+            {
+                DropExWindow(ex.Message + "\nСоздайте колонку");
+            }
+        }
 
-
-
+        /// <summary>
+        /// Add column
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void columnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string str = "";
+            var column = new DataGridViewColumn();
+            column.HeaderText = str;
+            column.Name = str;
+            column.CellTemplate = new DataGridViewTextBoxCell();
+            dataGridView1.Columns.Add(column);
+        }
 
         #endregion
 
@@ -701,27 +728,76 @@ namespace GerasimenkoER_KDZ3_v2
             toToolStripMenuItem.Checked = ene;
         }
 
-        private string[] FindSubstring(string where, params string[] which)
-        {
-            AhoCorasik.ACTree act = new AhoCorasik.ACTree();
-            act.Add(which);
-            act.Build();
-
-            return act.Find(where).ToArray();
-        }
 
         #endregion
 
+
+        private AhoCorasik FindSubstring(params string[] which) //string where, vector<pair<vector<int>, string>>
+        {
+            int max = 0;
+            foreach(var i in which) { max = Math.Max(max, i.Length); }
+            AhoCorasik act = new AhoCorasik(which,which.Length*max);
+
+
+            return act;//.find(where);
+        }
+
+        private int findInString(string s, string[] w)
+        {
+            int i = 0;
+            for(i = 0; i < w.Length; i++)
+            {
+                if (s == w[i]) return i;
+            }
+            return i;
+        }
+
+        private string[] deleteCopy(string[] s)
+        {
+            List<string> sr = new List<string>();
+            for(int i = 0; i < s.Length; ++i)
+            {
+                bool flag = true;
+                foreach (string j in sr)
+                {
+                    if (j == s[i])
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) sr.Add(s[i]);
+            }
+            return sr.ToArray();
+        }
+
         private void findToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            if (datas == null) { return; }
             string[] ws=ssesepToolStripMenuItem.Text.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            ws = deleteCopy(ws);
             string[] str = new string[ws.Length];
-            foreach (var i in datas){
-                foreach(var j in FindSubstring(i, ws)) { //ws
-                    str[] += j+"\n"; 
-                }
+            for(int i = 0; i < ws.Length; ++i)
+            {
+                str[i] = ws[i] + ": \n\r";
             }
-            DropExWindow(str);
+            int colnum=0;
+            AhoCorasik act = FindSubstring(ws);
+            foreach (var i in datas){
+                vector<pair<vector<int>, string>> v = act.find(i);
+                for(int j = 0; j<v.size();++j) { //ws
+                    if (v[j].first.size() == 0) { continue; }
+                    int n = findInString(v[j].second, ws);
+                    str[n] += ""+colnum+": "+v[j].first.tostring(",")+"\n\r"; 
+                }
+                colnum++;
+            }
+            vector<string> outs = new vector<string>();
+            outs.fill(str.ToList());
+            //DropExWindow(outs.tostring("\n"));
+            textBox1.Text=outs.tostring("\n\r");
         }
+
+        
     }
 }

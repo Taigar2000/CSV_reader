@@ -35,6 +35,11 @@
             this.encodingToolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripComboBox();
             this.ReopenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textHereseparatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resultToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
+            this.ssesepToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
+            this.findToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,12 +57,11 @@
             this.toToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripTextBox();
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vievToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overAllWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textHereseparatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ssesepToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
-            this.findToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.columnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -70,7 +74,7 @@
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 24);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(664, 465);
+            this.dataGridView1.Size = new System.Drawing.Size(664, 407);
             this.dataGridView1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -79,7 +83,7 @@
             this.reopenWhithEncodingToolStripMenuItem,
             this.findToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(194, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(194, 48);
             // 
             // reopenWhithEncodingToolStripMenuItem
             // 
@@ -117,6 +121,42 @@
             this.ReopenToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.ReopenToolStripMenuItem.Text = "Reopen";
             this.ReopenToolStripMenuItem.Click += new System.EventHandler(this.ReopenToolStripMenuItem_Click);
+            // 
+            // findToolStripMenuItem
+            // 
+            this.findToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.textHereseparatorToolStripMenuItem,
+            this.resultToolStripMenuItem,
+            this.ssesepToolStripMenuItem,
+            this.findToolStripMenuItem1});
+            this.findToolStripMenuItem.Name = "findToolStripMenuItem";
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.findToolStripMenuItem.Text = "Find";
+            // 
+            // textHereseparatorToolStripMenuItem
+            // 
+            this.textHereseparatorToolStripMenuItem.Enabled = false;
+            this.textHereseparatorToolStripMenuItem.Name = "textHereseparatorToolStripMenuItem";
+            this.textHereseparatorToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
+            this.textHereseparatorToolStripMenuItem.Text = "Text here (separator = \';\')";
+            // 
+            // resultToolStripMenuItem
+            // 
+            this.resultToolStripMenuItem.Name = "resultToolStripMenuItem";
+            this.resultToolStripMenuItem.Size = new System.Drawing.Size(261, 6);
+            // 
+            // ssesepToolStripMenuItem
+            // 
+            this.ssesepToolStripMenuItem.Name = "ssesepToolStripMenuItem";
+            this.ssesepToolStripMenuItem.Size = new System.Drawing.Size(204, 23);
+            this.ssesepToolStripMenuItem.Text = "s;se;sep";
+            // 
+            // findToolStripMenuItem1
+            // 
+            this.findToolStripMenuItem1.Name = "findToolStripMenuItem1";
+            this.findToolStripMenuItem1.Size = new System.Drawing.Size(264, 22);
+            this.findToolStripMenuItem1.Text = "Find";
+            this.findToolStripMenuItem1.Click += new System.EventHandler(this.findToolStripMenuItem1_Click);
             // 
             // menuStrip1
             // 
@@ -249,9 +289,19 @@
             // 
             // insertToolStripMenuItem
             // 
+            this.insertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rowToolStripMenuItem,
+            this.columnToolStripMenuItem});
             this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
             this.insertToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.insertToolStripMenuItem.Text = "Insert";
+            // 
+            // rowToolStripMenuItem
+            // 
+            this.rowToolStripMenuItem.Name = "rowToolStripMenuItem";
+            this.rowToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rowToolStripMenuItem.Text = "Row";
+            this.rowToolStripMenuItem.Click += new System.EventHandler(this.rowToolStripMenuItem_Click);
             // 
             // vievToolStripMenuItem
             // 
@@ -268,35 +318,22 @@
             this.overAllWindowsToolStripMenuItem.Text = "Over all windows";
             this.overAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.overAllWindowsToolStripMenuItem_Click);
             // 
-            // findToolStripMenuItem
+            // textBox1
             // 
-            this.findToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.textHereseparatorToolStripMenuItem,
-            this.ssesepToolStripMenuItem,
-            this.findToolStripMenuItem1});
-            this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.findToolStripMenuItem.Text = "Find";
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textBox1.Location = new System.Drawing.Point(0, 431);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(664, 58);
+            this.textBox1.TabIndex = 3;
             // 
-            // textHereseparatorToolStripMenuItem
+            // columnToolStripMenuItem
             // 
-            this.textHereseparatorToolStripMenuItem.Enabled = false;
-            this.textHereseparatorToolStripMenuItem.Name = "textHereseparatorToolStripMenuItem";
-            this.textHereseparatorToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.textHereseparatorToolStripMenuItem.Text = "Text here (separator = \';\')";
-            // 
-            // ssesepToolStripMenuItem
-            // 
-            this.ssesepToolStripMenuItem.Name = "ssesepToolStripMenuItem";
-            this.ssesepToolStripMenuItem.Size = new System.Drawing.Size(204, 23);
-            this.ssesepToolStripMenuItem.Text = "s;se;sep";
-            // 
-            // findToolStripMenuItem1
-            // 
-            this.findToolStripMenuItem1.Name = "findToolStripMenuItem1";
-            this.findToolStripMenuItem1.Size = new System.Drawing.Size(264, 22);
-            this.findToolStripMenuItem1.Text = "Find";
-            this.findToolStripMenuItem1.Click += new System.EventHandler(this.findToolStripMenuItem1_Click);
+            this.columnToolStripMenuItem.Name = "columnToolStripMenuItem";
+            this.columnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.columnToolStripMenuItem.Text = "Column";
+            this.columnToolStripMenuItem.Click += new System.EventHandler(this.columnToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -304,6 +341,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(664, 489);
             this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
@@ -349,6 +387,10 @@
         private System.Windows.Forms.ToolStripMenuItem textHereseparatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox ssesepToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ToolStripSeparator resultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem columnToolStripMenuItem;
     }
 }
 

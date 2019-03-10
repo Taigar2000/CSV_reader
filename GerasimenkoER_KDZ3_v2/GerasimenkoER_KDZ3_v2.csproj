@@ -66,6 +66,10 @@
     <Compile Include="SaveFileDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="STL.cs" />
+    <EmbeddedResource Include="Find.resx">
+      <DependentUpon>Find.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

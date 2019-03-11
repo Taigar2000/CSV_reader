@@ -556,8 +556,9 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void rowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try { 
-                dataGridView1.Rows.Add();
+            try {
+                //dataGridView1.Rows.Add();
+                dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count-1].Index);
             }
             catch(System.InvalidOperationException ex)
             {
@@ -677,6 +678,7 @@ namespace GerasimenkoER_KDZ3_v2
             try
             {
                 this.Text = name.Split('\\')[name.Split('\\').Length-1];
+                UpdateGrid();
                 base.OnPaint(e);
             }
             catch (Exception ex)

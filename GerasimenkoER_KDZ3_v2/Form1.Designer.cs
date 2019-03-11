@@ -51,11 +51,6 @@
             this.saveDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripTextBox();
-            this.toToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripTextBox();
             this.vievToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overAllWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -63,6 +58,11 @@
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.columnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fromToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripTextBox();
+            this.toToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -74,9 +74,9 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 24);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 49);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(664, 407);
+            this.dataGridView1.Size = new System.Drawing.Size(664, 382);
             this.dataGridView1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -164,7 +164,6 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.viewToolStripMenuItem,
             this.vievToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -251,6 +250,65 @@
             this.loadDialogToolStripMenuItem.Text = "Load Dialog";
             this.loadDialogToolStripMenuItem.Visible = false;
             // 
+            // vievToolStripMenuItem
+            // 
+            this.vievToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.overAllWindowsToolStripMenuItem});
+            this.vievToolStripMenuItem.Name = "vievToolStripMenuItem";
+            this.vievToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.vievToolStripMenuItem.Text = "Window";
+            // 
+            // overAllWindowsToolStripMenuItem
+            // 
+            this.overAllWindowsToolStripMenuItem.Name = "overAllWindowsToolStripMenuItem";
+            this.overAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.overAllWindowsToolStripMenuItem.Text = "Over all windows";
+            this.overAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.overAllWindowsToolStripMenuItem_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textBox1.Location = new System.Drawing.Point(0, 431);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(664, 58);
+            this.textBox1.TabIndex = 3;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertToolStripMenuItem,
+            this.viewToolStripMenuItem});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(664, 25);
+            this.toolStrip1.TabIndex = 4;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // insertToolStripMenuItem
+            // 
+            this.insertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rowToolStripMenuItem,
+            this.columnToolStripMenuItem});
+            this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
+            this.insertToolStripMenuItem.Size = new System.Drawing.Size(48, 25);
+            this.insertToolStripMenuItem.Text = "Insert";
+            // 
+            // rowToolStripMenuItem
+            // 
+            this.rowToolStripMenuItem.Name = "rowToolStripMenuItem";
+            this.rowToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.rowToolStripMenuItem.Text = "Row";
+            this.rowToolStripMenuItem.Click += new System.EventHandler(this.rowToolStripMenuItem_Click);
+            // 
+            // columnToolStripMenuItem
+            // 
+            this.columnToolStripMenuItem.Name = "columnToolStripMenuItem";
+            this.columnToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.columnToolStripMenuItem.Text = "Column";
+            this.columnToolStripMenuItem.Click += new System.EventHandler(this.columnToolStripMenuItem_Click);
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -259,7 +317,7 @@
             this.toToolStripMenuItem,
             this.toolStripMenuItem4});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 25);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // fromToolStripMenuItem
@@ -288,71 +346,13 @@
             this.toolStripMenuItem4.Size = new System.Drawing.Size(240, 23);
             this.toolStripMenuItem4.Text = "10";
             // 
-            // vievToolStripMenuItem
-            // 
-            this.vievToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.overAllWindowsToolStripMenuItem});
-            this.vievToolStripMenuItem.Name = "vievToolStripMenuItem";
-            this.vievToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.vievToolStripMenuItem.Text = "Window";
-            // 
-            // overAllWindowsToolStripMenuItem
-            // 
-            this.overAllWindowsToolStripMenuItem.Name = "overAllWindowsToolStripMenuItem";
-            this.overAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.overAllWindowsToolStripMenuItem.Text = "Over all windows";
-            this.overAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.overAllWindowsToolStripMenuItem_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textBox1.Location = new System.Drawing.Point(0, 431);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(664, 58);
-            this.textBox1.TabIndex = 3;
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.insertToolStripMenuItem});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(664, 25);
-            this.toolStrip1.TabIndex = 4;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // insertToolStripMenuItem
-            // 
-            this.insertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rowToolStripMenuItem,
-            this.columnToolStripMenuItem});
-            this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
-            this.insertToolStripMenuItem.Size = new System.Drawing.Size(48, 25);
-            this.insertToolStripMenuItem.Text = "Insert";
-            // 
-            // rowToolStripMenuItem
-            // 
-            this.rowToolStripMenuItem.Name = "rowToolStripMenuItem";
-            this.rowToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.rowToolStripMenuItem.Text = "Row";
-            this.rowToolStripMenuItem.Click += new System.EventHandler(this.rowToolStripMenuItem_Click);
-            // 
-            // columnToolStripMenuItem
-            // 
-            this.columnToolStripMenuItem.Name = "columnToolStripMenuItem";
-            this.columnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.columnToolStripMenuItem.Text = "Column";
-            this.columnToolStripMenuItem.Click += new System.EventHandler(this.columnToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(664, 489);
-            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -391,11 +391,6 @@
         private System.Windows.Forms.ToolStripComboBox typeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ReopenToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox encodingToolStripComboBox1;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fromToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toToolStripMenuItem;
-        private System.Windows.Forms.ToolStripTextBox toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripTextBox toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textHereseparatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox ssesepToolStripMenuItem;
@@ -406,6 +401,11 @@
         private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem columnToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fromToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem toToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripMenuItem4;
     }
 }
 

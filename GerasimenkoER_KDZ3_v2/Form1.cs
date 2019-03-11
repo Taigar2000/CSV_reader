@@ -381,8 +381,15 @@ namespace GerasimenkoER_KDZ3_v2
             }
         }
 
-        
-
+        /// <summary>
+        /// Analog of save
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            saveToolStripMenuItem1_Click(sender, e);
+        }
 
 
 
@@ -537,7 +544,10 @@ namespace GerasimenkoER_KDZ3_v2
             loadToolStripMenuItem_Click(sender, e, reopen);
         }
 
-
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            loadToolStripMenuItem_Click(sender, e);
+        }
 
 
         #endregion
@@ -1009,6 +1019,71 @@ namespace GerasimenkoER_KDZ3_v2
         }
 
 
+
+
+
+        #endregion
+
+        #region Filter
+
+        /// <summary>
+        /// Start filtering
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void filterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!isadded) {
+                DropExWindow("Для начала фильтрации установите галочку в поле Filtering");
+                return;
+            }
+            try
+            {
+                string colname = nameOfColumnToolStripMenuItem.Text;
+                string filtert = textToolStripMenuItem.Text;
+                BindingSource filter = new BindingSource();
+                filter.DataSource = dataGridView1.Columns[colname];
+                //filter.Filter = colname + " Like " + filtert;
+                if (filtert == "")
+                {
+                    filter.Filter = String.Empty;
+                }
+                else
+                {
+                    filter.Filter = colname + " LIKE '%" + filtert + "%'";
+                }
+
+                //DataSet ds = new DataSet();
+                //ds = ((DataSet)(dataGridView1.DataSource));
+                //DataSet deT = (DataSet)(dataGridView1.DataSource);
+                //DataView dv = ds.Tables[0].DefaultView;
+                //dv.RowFilter = string.Format("country LIKE '%{0}%'", filtert);
+                //dataGridView1.DataSource = dv;
+
+                //(dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format("Field = '{0}'", filtert);
+
+                dataGridView1.DataSource = filter;
+            }
+            catch(Exception ex)
+            {
+                DropExWindow("Проверьте правильность введённых полей\n" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Change filtering state
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            isadded ^= true;
+            toolStripMenuItem5.Checked = isadded;
+            if (!isadded)
+            {
+                dataGridView1.DataSource = null;
+            }
+        }
 
 
 

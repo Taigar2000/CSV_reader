@@ -306,7 +306,7 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="s">List of string from colums</param>
         /// <param name="c">Separator between columns</param>
         /// <returns></returns>
-        public static string ConvertListstrtoCSVline(List<string> s, char c = ',')
+        public static string ConvertListstrtoCSVline(List<string> s, char c = ',', bool always=false)
         {
             bool isquote = false;
             string sn = "",sr = "";
@@ -341,13 +341,14 @@ namespace GerasimenkoER_KDZ3_v2
                         continue;
                     }
                 }
-                if (isquote) { sn = '"'+sn+'"'; }
+                if (isquote || always) { sn = '"'+sn+'"'; }
                 sr+=sn;
                 sr+=c;
                 sn = "";
                 isquote = false;
             }
-            return sr;
+            sr = sr.Substring(0, Math.Max(0,sr.Length - 1));
+            return sr;//.TrimEnd(c);
         }
 
         #endregion

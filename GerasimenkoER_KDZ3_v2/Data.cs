@@ -15,9 +15,10 @@ namespace GerasimenkoER_KDZ3_v2
         public char separ = ';';
         public bool rewrite = false;
         public bool issaved = true;
+        public bool isaded = false;
         public bool sne = false, ene = false;
         public Encoding encode = Encoding.Default;
-        public int sn = -1;
+        public int sn = 1;
         public int en = -1;
     }
 }

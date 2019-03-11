@@ -35,6 +35,7 @@ namespace GerasimenkoER_KDZ3_v2
         char separ { get { return d.separ; } set { d.separ = value; } }
         bool rewrite { get { return d.rewrite; } set { d.rewrite = value; } }
         bool issaved { get { return d.issaved; } set { d.issaved = value; } }
+        bool isadded { get { return d.isaded; } set { d.isaded = value; } }
         bool sne { get { return d.sne; } set { d.sne = value; } }
         bool ene { get { return d.ene; } set { d.ene = value; } }
         Encoding encode { get { return d.encode; } set { d.encode = value; } }
@@ -557,13 +558,79 @@ namespace GerasimenkoER_KDZ3_v2
         private void rowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try {
-                //dataGridView1.Rows.Add();
-                dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count-1].Index);
+                //
+                dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index);
+                return;
+                if (dataGridView1.Rows.Count == 0 || dataGridView1.SelectedRows.Count == 0) {
+                    dataGridView1.Rows.Add();
+                    if (datas == null)
+                    {
+                        data = new List<List<string>>();
+                        datas = new string[0];
+                    }
+                    data.Add(new List<string>(data[0].Count));
+                    for(int i = 0; i < data[data.Count - 1].Count; i++)
+                    {
+                        data[data.Count - 1][i] = "";
+                    }
+                    string[] datas2 = datas;
+                    Array.Resize(ref datas2, datas.Length + 1);
+                    datas = datas2;
+                    datas[datas.Length - 1] = "";
+                }
+                else {
+                    data.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index, new List<string>(data[0].Count));
+                    for (int i = 0; i < data[dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index].Count; i++)
+                    {
+                        data[dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index][i] = "";
+                    }
+                    string[] datas2 = datas;
+                    Array.Resize(ref datas2, datas.Length + 1);
+                    datas = datas2;
+                    for (int i = 0; i < data.Count; i++) { 
+                        datas[i]=CSVconv.ConvertListstrtoCSVline(data[i],separ);
+                    }
+                    dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count-1].Index);
+
+                }
+                
             }
             catch(System.InvalidOperationException ex)
             {
                 DropExWindow(ex.Message + "\nСоздайте колонку");
             }
+            catch(Exception ex)
+            {
+                DropExWindow("\nСоздайте колонку!");
+            }
+        }
+
+        /// <summary>
+        /// Added rows event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            //e.RowIndex;
+            if (isadded) { return; }
+            for (int k = 0; k < e.RowCount; k++) { 
+                data.Insert(e.RowIndex+sn, new List<string>(data[0].Count));
+                for (int i = 0; i < data[0].Count; i++)
+                {
+                    data[e.RowIndex + sn].Add("");
+                    //data[e.RowIndex+sn][i] = "";
+                }
+                string[] datas2 = datas;
+                Array.Resize(ref datas2, datas.Length + 1);
+                datas = datas2;
+                for (int i = 0; i < data.Count; i++)
+                {
+                    datas[i] = CSVconv.ConvertListstrtoCSVline(data[i], separ);
+                }
+            //dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index);
+            }
+            int _ = 0;
         }
 
         /// <summary>
@@ -573,12 +640,33 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void columnToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (datas == null)
+            {
+                data = new List<List<string>>();
+                data.Add(new List<string>());
+                //data.Add(new List<string>());
+                datas = new string[1];
+            }
             string str = "";
             var column = new DataGridViewColumn();
             column.HeaderText = str;
             column.Name = str;
             column.CellTemplate = new DataGridViewTextBoxCell();
             dataGridView1.Columns.Add(column);
+            //data[0].Add("");
+            for (int i = 0; i < data.Count-1; i++)
+            {
+                data[i].Add("");
+                datas[i] = CSVconv.ConvertListstrtoCSVline(data[i], separ);
+            }
+        }
+
+        private void editCellData(object sender, System.Windows.Forms.DataGridViewCellEventArgs e) {
+            if(isadded) { return; }
+            int ci = e.ColumnIndex;
+            int ri = e.RowIndex;
+            data[ri+sn][ci] = (string)dataGridView1.Rows[ri].Cells[ci].Value;
+            datas[ri+sn] = CSVconv.ConvertListstrtoCSVline(data[ri+sn], separ);
         }
 
         #endregion
@@ -595,17 +683,18 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         public void UpdateGrid(object sender = null, EventArgs e = null)
         {
+            isadded = true;
             sn = en = -1;
             int ssn=0;
-            if (sne) { if (!int.TryParse(toolStripMenuItem3.Text, out ssn) || ssn < 1) {DropExWindow("Uncorrect format of value \"From\""); return; } }
+            if (sne) { if (!int.TryParse(toolStripMenuItem3.Text, out ssn) || ssn < 1) { sn = 1; DropExWindow("Uncorrect format of value \"From\" (needed>=1)"); return; } }
             sn = ssn;
-            if (ene) { if (!int.TryParse(toolStripMenuItem4.Text, out ssn) || ssn <= sn) {DropExWindow("Uncorrect format of value \"To\""); return; } }
+            if (ene) { if (!int.TryParse(toolStripMenuItem4.Text, out ssn) || ssn <= sn || ssn>=data.Count) {DropExWindow("Uncorrect format of value \"To\" (Count of rows>needed>From)"); return; } }
             en = ssn;
             sn = Math.Max(sn,1);
-            if (en <= sn) { en = data.Count; }
+            if (en <= sn) { en = data.Count-1; }
             if(data==null) { return; }
             int maxlen = data[0].Count;
-            for(int i = 0; i < data.Count; ++i)
+            for(int i = sn; i < en; ++i)
             {
                 maxlen = Math.Max(maxlen, data[i].Count);
             }
@@ -623,6 +712,7 @@ namespace GerasimenkoER_KDZ3_v2
             for (int j = sn; j < en; ++j) { 
                 dataGridView1.Rows.Add(data[j].ToArray());
             }
+            isadded = false;
             Invalidate();
         }
 
@@ -678,7 +768,7 @@ namespace GerasimenkoER_KDZ3_v2
             try
             {
                 this.Text = name.Split('\\')[name.Split('\\').Length-1];
-                UpdateGrid();
+                //if (datas != null) { UpdateGrid(); }
                 base.OnPaint(e);
             }
             catch (Exception ex)
@@ -783,16 +873,18 @@ namespace GerasimenkoER_KDZ3_v2
             {
                 str[i] = ws[i] + ": \n\r";
             }
-            int colnum=0;
             AhoCorasik act = FindSubstring(ws);
-            foreach (var i in datas){
-                vector<pair<vector<int>, string>> v = act.find(i);
-                for(int j = 0; j<v.size();++j) { //ws
-                    if (v[j].first.size() == 0) { continue; }
-                    int n = findInString(v[j].second, ws);
-                    str[n] += ""+colnum+": "+v[j].first.tostring(",")+"\n\r"; 
+            for (int di = 0; di < data.Count; ++di){
+                int colnum=0;
+                foreach (string i in data[di]) { 
+                    vector<pair<vector<int>, string>> v = act.find(i);
+                    for(int j = 0; j<v.size();++j) { //ws
+                        if (v[j].first.size() == 0) { continue; }
+                        int n = findInString(v[j].second, ws);
+                        str[n] += "ROW:COL ("+di+":"+colnum+"): "+v[j].first.tostring(",")+"\n\r"; 
+                    }
+                    colnum++;
                 }
-                colnum++;
             }
             vector<string> outs = new vector<string>();
             outs.fill(str.ToList());

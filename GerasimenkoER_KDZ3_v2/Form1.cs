@@ -16,6 +16,8 @@ namespace GerasimenkoER_KDZ3_v2
         bool IS_AUTO_UPDATE_ES = false;
 
         Data d = new Data();
+        List<ОПОП> opop = new List<ОПОП>();
+        List<Расположение> adr = new List<Расположение>();
         //bool flagmb = false;
         //string name = "";
         //List<List<string>> data = null;
@@ -48,6 +50,7 @@ namespace GerasimenkoER_KDZ3_v2
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -425,6 +428,7 @@ namespace GerasimenkoER_KDZ3_v2
                     name = FBD.FileName;//.Remove(FBD.FileName.Length - 1);
                     datas = CSVconv.fscanf(name, this.encode);
                     data=CSVconv.LoadCSVtoStr("" + name, separ, this.encode);
+                    UpdateData(data, out opop, out adr);
                     UpdateGrid();
                     issaved = true;
                 }
@@ -559,8 +563,12 @@ namespace GerasimenkoER_KDZ3_v2
         {
             try {
                 //
-                dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index);
+                if (dataGridView1.SelectedRows.Count == 0 && data != null) { dataGridView1.Rows.Add(); }
+                else { dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index); }
                 return;
+                
+                    
+                
                 if (dataGridView1.Rows.Count == 0 || dataGridView1.SelectedRows.Count == 0) {
                     dataGridView1.Rows.Add();
                     if (datas == null)
@@ -628,8 +636,9 @@ namespace GerasimenkoER_KDZ3_v2
                 {
                     datas[i] = CSVconv.ConvertListstrtoCSVline(data[i], separ);
                 }
-            //dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index);
+                //dataGridView1.Rows.Insert(dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count - 1].Index);
             }
+            UpdateData(data, out opop, out adr);
             int _ = 0;
         }
 
@@ -648,25 +657,33 @@ namespace GerasimenkoER_KDZ3_v2
                 datas = new string[1];
             }
             string str = "";
-            var column = new DataGridViewColumn();
+            var column = new DataGridViewTextBoxColumn();
             column.HeaderText = str;
             column.Name = str;
             column.CellTemplate = new DataGridViewTextBoxCell();
             dataGridView1.Columns.Add(column);
+            //dataGridView1.Columns[dataGridView1.Columns.Count-1].SortMode = DataGridViewColumnSortMode.Programmatic;
             //data[0].Add("");
             for (int i = 0; i < data.Count-1; i++)
             {
                 data[i].Add("");
                 datas[i] = CSVconv.ConvertListstrtoCSVline(data[i], separ);
             }
+            UpdateData(data, out opop, out adr);
         }
 
+        /// <summary>
+        /// Edit data of some cell eventHandler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void editCellData(object sender, System.Windows.Forms.DataGridViewCellEventArgs e) {
             if(isadded) { return; }
             int ci = e.ColumnIndex;
             int ri = e.RowIndex;
             data[ri+sn][ci] = (string)dataGridView1.Rows[ri].Cells[ci].Value;
             datas[ri+sn] = CSVconv.ConvertListstrtoCSVline(data[ri+sn], separ);
+            UpdateData(data, out opop, out adr);
         }
 
         #endregion
@@ -688,7 +705,7 @@ namespace GerasimenkoER_KDZ3_v2
             int ssn=0;
             if (sne) { if (!int.TryParse(toolStripMenuItem3.Text, out ssn) || ssn < 1) { sn = 1; DropExWindow("Uncorrect format of value \"From\" (needed>=1)"); return; } }
             sn = ssn;
-            if (ene) { if (!int.TryParse(toolStripMenuItem4.Text, out ssn) || ssn <= sn || ssn>=data.Count) {DropExWindow("Uncorrect format of value \"To\" (Count of rows>needed>From)"); return; } }
+            if (ene) { if (!int.TryParse(toolStripMenuItem4.Text, out ssn) || ssn <= sn || ssn>=data.Count) { en = data.Count-1;  DropExWindow("Uncorrect format of value \"To\" (Count of rows>needed>From)"); return; } }
             en = ssn;
             sn = Math.Max(sn,1);
             if (en <= sn) { en = data.Count-1; }
@@ -703,7 +720,7 @@ namespace GerasimenkoER_KDZ3_v2
             {
                 string str = "";
                 if (data[0].Count > i) { str = data[0][i]; }
-                var column = new DataGridViewColumn();
+                var column = new DataGridViewTextBoxColumn();
                 column.HeaderText = str;
                 column.Name = str;
                 column.CellTemplate = new DataGridViewTextBoxCell();
@@ -868,10 +885,11 @@ namespace GerasimenkoER_KDZ3_v2
             if (datas == null) { return; }
             string[] ws=ssesepToolStripMenuItem.Text.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             ws = deleteCopy(ws);
-            string[] str = new string[ws.Length];
+            List<string>[] str = new List<string>[ws.Length];
             for(int i = 0; i < ws.Length; ++i)
             {
-                str[i] = ws[i] + ": \n\r";
+                str[i] = new List<string>();
+                str[i].Add(ws[i] + ": \n\r");
             }
             AhoCorasik act = FindSubstring(ws);
             for (int di = 0; di < data.Count; ++di){
@@ -881,17 +899,120 @@ namespace GerasimenkoER_KDZ3_v2
                     for(int j = 0; j<v.size();++j) { //ws
                         if (v[j].first.size() == 0) { continue; }
                         int n = findInString(v[j].second, ws);
-                        str[n] += "ROW:COL ("+di+":"+colnum+"): "+v[j].first.tostring(",")+"\n\r"; 
+                        str[n].Add("(R:C)=("+di+":"+(colnum+1)+"): "+v[j].first.tostring(",")+'\n'+'\r'); 
                     }
                     colnum++;
                 }
             }
             vector<string> outs = new vector<string>();
-            outs.fill(str.ToList());
+            for(int i = 0; i < str.Length; ++i)
+            {
+                foreach(var j in str[i]) {
+                    outs.append(j);
+                }
+
+            }
             //DropExWindow(outs.tostring("\n"));
-            textBox1.Text=outs.tostring("\n\r");
+            this.textBox1.Lines = outs.toarray();
+            //textBox1.Text=outs.tostring("\n\r");
         }
 
-        
+        /// <summary>
+        /// Update data of ОПОП
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="opop"></param>
+        /// <param name="adr"></param>
+        static void UpdateData(List<List<string>> data, out List<ОПОП> opop, out List<Расположение> adr)
+        {
+            opop = new List<ОПОП>();
+            adr = new List<Расположение>();
+            if (data[0].Count < 11) { return; }
+            bool flage = true;
+            foreach (var i in data)
+            {
+                if (flage)
+                {
+                    flage = false;
+                    continue;
+                }
+                if (i.Count < 11) { continue; }
+                bool flag = true;
+                int k = 0;
+                for (; k < adr.Count; ++k)
+                {
+                    if (adr[k].AdmArea == i[3] && adr[k].District == i[4])
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    adr.Add(new Расположение());
+                }
+                opop.Add(new ОПОП(i, adr[k]));
+
+            }
+        }
+
+        #region Sort
+
+        //private Button sortButton = new Button();
+
+        private void dataGridView1_SortCompare(object sender,
+        DataGridViewSortCompareEventArgs e)
+        {
+            // Try to sort based on the cells in the current column.
+            bool flag = true;
+            try
+            {
+
+                if (flag && (e.Column.Name == "OPOPNumber" || e.Column.Name == "GLOBALID"))
+                {
+                    flag = false;
+                    int n = Math.Max(e.CellValue1.ToString().Length, e.CellValue2.ToString().Length);
+                    e.SortResult = String.Compare((int.Parse(e.CellValue1.ToString())).ToString("D" + n), (int.Parse(e.CellValue2.ToString())).ToString("D" + n));
+                }
+                if (flag && e.Column.Name == "ROWNUM")
+                {
+                    flag = false;
+                    int n = Math.Max(e.CellValue1.ToString().Length, e.CellValue2.ToString().Length);
+                    e.SortResult = String.Compare((int.Parse(e.CellValue1.ToString())).ToString("D" + n), (int.Parse(e.CellValue2.ToString())).ToString("D" + n));
+                }
+
+                if (flag) { e.SortResult = System.String.Compare(e.CellValue1.ToString(), e.CellValue2.ToString()); }
+                // If the cells are equal, sort based on the ID column.
+                if (e.SortResult == 0 && e.Column.Name != "ROWNUM")
+                {
+                    int n = Math.Max(e.CellValue1.ToString().Length, e.CellValue2.ToString().Length);
+                    e.SortResult = String.Compare((int.Parse(e.CellValue1.ToString())).ToString("D" + n), (int.Parse(e.CellValue2.ToString())).ToString("D" + n));
+                }
+                e.Handled = true;
+            }
+            catch(ArgumentNullException ex)
+            {
+                DropExWindow("Значение ячейки имеет неверный формат\n" + ex.Message);
+            }
+            catch (FormatException ex)
+            {
+                DropExWindow("Значение ячейки имеет неверный формат\n" + ex.Message);
+            }
+            catch (OverflowException ex)
+            {
+                DropExWindow("Значение ячейки имеет неверный формат\n" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                DropExWindow("Значение ячейки имеет неверный формат\n" + ex.Message);
+            }
+        }
+
+
+
+
+
+        #endregion
+
     }
 }

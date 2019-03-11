@@ -11,16 +11,47 @@ namespace GerasimenkoER_KDZ3_v2
     }
 
     class pair<T1, T2>
+        //where T1 : IComparable
+        //where T2 : IComparable
     {
         public T1 first;
         public T2 second;
-        //public void setfirst(T1 w)
+        public pair() { }
+        public pair(T1 firste, T2 seconde){
+            first = firste;
+            second = seconde;
+        }
+
+        public static pair<TT1,TT2> makepair<TT1,TT2>(TT1 first, TT2 second)
+        {
+            return new pair<TT1, TT2>(first, second);
+        }
+
+        public void setfirst(T1 w)
+        {
+            first = w;
+        }
+        public void setsecond(T2 w)
+        {
+            second = w;
+        }
+
+        //public static bool operator ==(pair<T1, T2> a, pair<T1, T2> b)
         //{
-        //    first= w;
+        //    return a.first.CompareTo(b.first)==0 && a.second.CompareTo(b.second)==0;
         //}
-        //public void setsecond(T2 w)
+        //public static bool operator !=(pair<T1, T2> a, pair<T1, T2> b)
         //{
-        //    second = w;
+        //    return !(a==b);
+        //}
+
+        //public static bool operator ==(pair<string, string> a, pair<string, string> b)
+        //{
+        //    return a.first.CompareTo(b.first)==0 && a.second.CompareTo(b.second)==0;
+        //}
+        //public static bool operator !=(pair<string, string> a, pair<string, string> b)
+        //{
+        //    return !(a==b);
         //}
 
     }
@@ -82,6 +113,10 @@ namespace GerasimenkoER_KDZ3_v2
                 s += e[i] + separator;
             }
             return s;
+        }
+        public T[] toarray()
+        {
+            return e.ToArray();
         }
     }
 

@@ -202,7 +202,7 @@ namespace GerasimenkoER_KDZ3_v2
             {
                 res.Add(ConvertCSVlinetoListstr(s[i], c));
             }
-
+            res.Add(new List<string>());
             return res;
         }
 

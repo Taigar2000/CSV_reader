@@ -14,9 +14,18 @@ namespace GerasimenkoER_KDZ3_v2
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            start: bool flag = false;
+            try
+            {
+                flag = false;
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Form1());
+
+            }
+            catch(Exception ex) { flag = true; }
+            finally { }
+            if (flag) { goto start; }
             //Application.Run(new Find());
         }
     }

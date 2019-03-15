@@ -236,6 +236,37 @@ namespace GerasimenkoER_KDZ3_v2
             
         }
 
+        /// <summary>
+        /// Save data from table to CSV file
+        /// </summary>
+        /// <param name="path">Path to file</param>
+        /// <param name="s">Data from rows of table</param>
+        /// <param name="c">CSV or another separator</param>
+        /// <param name="rewrite">Rewrite or append</param>
+        public static void SaveStrtoCSV(string path, System.Windows.Forms.DataGridViewRowCollection s, char c = ',', bool rewrite = false, Encoding encode = null)
+        {
+            List<string> se = new List<string>();
+            for (int i = 0; i < s.Count; i++)
+            {
+                if(s[i].Visible)
+                    se.Add(ConvertListstrtoCSVline(s[i].Cells, c));
+            }
+            try
+            {
+                fprintf(path, se.ToArray(), rewrite, encode);
+
+            }
+            catch (CSVException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new CSVException(null, e);
+            }
+
+        }
+
         #region Converters
 
         /// <summary>
@@ -288,7 +319,7 @@ namespace GerasimenkoER_KDZ3_v2
                     continue;
                 }
                 if (!isquote)
-                {
+                { 
                     sn += s[i];
                     if (fs) { fs = false; }
                     continue;
@@ -350,6 +381,58 @@ namespace GerasimenkoER_KDZ3_v2
             sr = sr.Substring(0, Math.Max(0,sr.Length - 1));
             return sr;//.TrimEnd(c);
         }
+
+        /// <summary>
+        /// Convert form String arr from colums to CSV line
+        /// </summary>
+        /// <param name="s">List of string from colums</param>
+        /// <param name="c">Separator between columns</param>
+        /// <returns></returns>
+        public static string ConvertListstrtoCSVline(System.Windows.Forms.DataGridViewCellCollection s, char c = ',', bool always = false)
+        {
+            bool isquote = false;
+            string sn = "", sr = "";
+
+
+
+            for (int j = 0; j < s.Count; j++)
+            {
+                for (int i = 0; i < ((string)(s[j].Value)).Length; i++)
+                {
+                    if (((string)(s[j].Value))[i] == '"')
+                    {
+                        sn += '"';
+                        sn += ((string)(s[j].Value))[i];
+                        isquote = true;
+                        continue;
+                    }
+                    if (isquote)
+                    {
+                        sn += ((string)(s[j].Value))[i];
+                        continue;
+                    }
+                    if (((string)(s[j].Value))[i] == c)
+                    {
+                        sn += ((string)(s[j].Value))[i];
+                        isquote = true;
+                        continue;
+                    }
+                    if (!isquote)
+                    {
+                        sn += ((string)(s[j].Value))[i];
+                        continue;
+                    }
+                }
+                if (isquote || always) { sn = '"' + sn + '"'; }
+                sr += sn;
+                sr += c;
+                sn = "";
+                isquote = false;
+            }
+            sr = sr.Substring(0, Math.Max(0, sr.Length - 1));
+            return sr;//.TrimEnd(c);
+        }
+
 
         #endregion
 

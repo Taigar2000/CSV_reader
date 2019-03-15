@@ -189,7 +189,8 @@ namespace GerasimenkoER_KDZ3_v2
                 }
                 else
                 {
-                    CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, this.encode);
+                    if (isadded) CSVconv.SaveStrtoCSV("" + name, dataGridView1.Rows, separ, rewrite, this.encode);
+                    else CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, this.encode);
                 }
                 issaved = true;
             }
@@ -262,7 +263,8 @@ namespace GerasimenkoER_KDZ3_v2
                     separ = ofd.FilterIndex-1 == 0 ? ',' : ofd.FilterIndex-1 == 1 ? '\t' : ofd.FilterIndex-1 == 2 ? ';' : ofd.FilterIndex-1 == 3 ? '\t' : ofd.FilterIndex-1 == 4 ? ';' : ',';//FBD.FileName[FBD.FileName.Length - 1];
                     name = ofd.FileName;//.Remove(ofd.FileName.Length - 1);
 
-                    CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, this.encode/*,(char)ofd.EncodingType*//*,ofd.Rewrite*/);
+                    if (isadded) CSVconv.SaveStrtoCSV("" + name, dataGridView1.Rows, separ, rewrite, this.encode);
+                    else CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, this.encode/*,(char)ofd.EncodingType*//*,ofd.Rewrite*/);
                     issaved = true;
                 }
             }
@@ -303,7 +305,8 @@ namespace GerasimenkoER_KDZ3_v2
                 {
                     separ = FBD.FilterIndex-1 == 0 ? ';' : ',';//FBD.FileName[FBD.FileName.Length - 1];
                     name = FBD.FileName;//.Remove(FBD.FileName.Length - 1);
-                    CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, Encoding.Default);
+                    if (isadded) CSVconv.SaveStrtoCSV("" + name, dataGridView1.Rows, separ, rewrite, this.encode);
+                    else CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, Encoding.Default);
                     issaved = true;
                 }
             }
@@ -351,7 +354,8 @@ namespace GerasimenkoER_KDZ3_v2
                 {
                     separ = FBD.FilterIndex - 1 == 0 ? ',' : FBD.FilterIndex - 1 == 1 ? '\t' : FBD.FilterIndex - 1 == 2 ? ';' : FBD.FilterIndex - 1 == 3 ? '\t' : FBD.FilterIndex - 1 == 4 ? ';' : ',';//FBD.FileName[FBD.FileName.Length - 1];
                     name = FBD.FileName;//.Remove(FBD.FileName.Length - 1);
-                    CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, this.encode);
+                    if(isadded) CSVconv.SaveStrtoCSV("" + name, dataGridView1.Rows, separ, rewrite, this.encode);
+                    else CSVconv.SaveStrtoCSV("" + name, data, separ, rewrite, this.encode);
                     issaved = true;
                 }
             }
@@ -431,6 +435,7 @@ namespace GerasimenkoER_KDZ3_v2
 
                 if (FBD.ShowDialog() == DialogResult.OK)
                 {
+                    if (isadded) { toolStripMenuItem5_Click(sender, e); }
                     separ = FBD.FilterIndex-1 == 0 ? ',' : FBD.FilterIndex - 1 == 1 ? '\t' : FBD.FilterIndex - 1 == 2 ? ';' : FBD.FilterIndex - 1 == 3 ? '\t' : FBD.FilterIndex - 1 == 4 ? ';' : ',';//FBD.FileName[FBD.FileName.Length - 1];
                     name = FBD.FileName;//.Remove(FBD.FileName.Length - 1);
                     datas = CSVconv.fscanf(name, this.encode);
@@ -554,14 +559,25 @@ namespace GerasimenkoER_KDZ3_v2
 
 
         /// <summary>
-        /// Новое окно фрактала
+        /// Новая таблица
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //if (this.Frac != null && this.Frac.isdrawing) return;
-            (new Form1()).ShowDialog(new Form1());
+            //(new Form1()).ShowDialog(new Form1());
+            dataGridView1.Rows.Clear();
+        }
+
+        /// <summary>
+        /// Event New table
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newToolStripButton_Click(object sender, EventArgs e)
+        {
+            newToolStripMenuItem_Click(sender, e);
         }
 
         /// <summary>
@@ -640,7 +656,7 @@ namespace GerasimenkoER_KDZ3_v2
                     //data[e.RowIndex+sn][i] = "";
                 }
                 string[] datas2 = datas;
-                Array.Resize(ref datas2, datas.Length + 1);
+                Array.Resize(ref datas2, data.Count + 1);
                 datas = datas2;
                 for (int i = 0; i < data.Count; i++)
                 {
@@ -666,7 +682,7 @@ namespace GerasimenkoER_KDZ3_v2
                 //data.Add(new List<string>());
                 datas = new string[1];
             }
-            string str = "";
+            string str = columnNameToolStripMenuItem.Text;
             var column = new DataGridViewTextBoxColumn();
             column.HeaderText = str;
             column.Name = str;
@@ -710,7 +726,9 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         public void UpdateGrid(object sender = null, EventArgs e = null)
         {
-            isadded = true;
+            //isadded = true;
+            bool flag = false;
+            if (!isadded) { toolStripMenuItem5_Click(sender, e); flag = true; }
             sn = en = -1;
             int ssn=0;
             if (sne) { if (!int.TryParse(toolStripMenuItem3.Text, out ssn) || ssn < 1) { sn = 1; DropExWindow("Uncorrect format of value \"From\" (needed>=1)"); return; } }
@@ -729,6 +747,10 @@ namespace GerasimenkoER_KDZ3_v2
             for (int i = 0; i < maxlen; ++i)
             {
                 string str = "";
+                if (i < data[0].Count)
+                {
+                    str = data[0][i];
+                }
                 if (data[0].Count > i) { str = data[0][i]; }
                 var column = new DataGridViewTextBoxColumn();
                 column.HeaderText = str;
@@ -739,7 +761,8 @@ namespace GerasimenkoER_KDZ3_v2
             for (int j = sn; j < en; ++j) { 
                 dataGridView1.Rows.Add(data[j].ToArray());
             }
-            isadded = false;
+            //isadded = false;
+            if (flag) { toolStripMenuItem5_Click(sender, e); flag = false; }
             Invalidate();
         }
 
@@ -850,7 +873,11 @@ namespace GerasimenkoER_KDZ3_v2
 
         #endregion
 
-
+        /// <summary>
+        /// Create AhoCorasic exemplar
+        /// </summary>
+        /// <param name="which"></param>
+        /// <returns></returns>
         private AhoCorasik FindSubstring(params string[] which) //string where, vector<pair<vector<int>, string>>
         {
             int max = 0;
@@ -861,6 +888,12 @@ namespace GerasimenkoER_KDZ3_v2
             return act;//.find(where);
         }
 
+        /// <summary>
+        /// Find equal string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="w"></param>
+        /// <returns></returns>
         private int findInString(string s, string[] w)
         {
             int i = 0;
@@ -871,6 +904,11 @@ namespace GerasimenkoER_KDZ3_v2
             return i;
         }
 
+        /// <summary>
+        /// Only one of equals string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         private string[] deleteCopy(string[] s)
         {
             List<string> sr = new List<string>();
@@ -890,6 +928,11 @@ namespace GerasimenkoER_KDZ3_v2
             return sr.ToArray();
         }
 
+        /// <summary>
+        /// Find substrings in string
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void findToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (datas == null) { return; }
@@ -902,23 +945,51 @@ namespace GerasimenkoER_KDZ3_v2
                 str[i].Add(ws[i] + ": \n\r");
             }
             AhoCorasik act = FindSubstring(ws);
-            for (int di = 0; di < data.Count; ++di){
+            for (int di = 0; di < (isadded?dataGridView1.Rows.Count:data.Count); ++di){
                 int colnum=0;
-                foreach (string i in data[di]) { 
-                    vector<pair<vector<int>, string>> v = act.find(i);
-                    for(int j = 0; j<v.size();++j) { //ws
-                        if (v[j].first.size() == 0) { continue; }
-                        int n = findInString(v[j].second, ws);
-                        str[n].Add("(R:C)=("+di+":"+(colnum+1)+"): "+v[j].first.tostring(",")+'\n'+'\r'); 
+                if (isadded)
+                {
+                    if(!dataGridView1.Rows[di].Visible) { continue; }
+                    try
+                    {
+                        for (int ii = 0; ii < dataGridView1.Rows[di].Cells.Count; ++ii)
+                        {
+                            string i = (string)dataGridView1.Rows[di].Cells[ii].Value;
+                            if (i == null) { continue; }
+                            vector<pair<vector<int>, string>> v = act.find(i);
+                            for (int j = 0; j < v.size(); ++j)
+                            { //ws
+                                if (v[j].first.size() == 0) { continue; }
+                                int n = findInString(v[j].second, ws);
+                                str[n].Add("(R:C)=(" + (string)dataGridView1.Rows[di].Cells[0].Value + ":" + (colnum + 1) + "): " + v[j].first.tostring(",") + '\n' + '\r');
+                            }
+                            colnum++;
+                        }
                     }
-                    colnum++;
+                    catch(Exception ex) { }
+                }
+                else
+                {
+                    foreach (string i in data[di])
+                    {
+                        vector<pair<vector<int>, string>> v = act.find(i);
+                        for (int j = 0; j < v.size(); ++j)
+                        { //ws
+                            if (v[j].first.size() == 0) { continue; }
+                            int n = findInString(v[j].second, ws);
+                            str[n].Add("(R:C)=(" + (string)dataGridView1.Rows[di].Cells[0].Value + ":" + (colnum + 1) + "): " + v[j].first.tostring(",") + '\n' + '\r');
+                        }
+                        colnum++;
+                    }
                 }
             }
             vector<string> outs = new vector<string>();
             for(int i = 0; i < str.Length; ++i)
             {
+                bool flag = true;
                 foreach(var j in str[i]) {
                     outs.append(j);
+                    if (flag) { outs.append("Count: " + (str[i].Count - 1)); flag = false; }
                 }
 
             }
@@ -1033,6 +1104,7 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void filterToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool flag = true;
             if (!isadded) {
                 DropExWindow("Для начала фильтрации установите галочку в поле Filtering");
                 return;
@@ -1040,33 +1112,46 @@ namespace GerasimenkoER_KDZ3_v2
             try
             {
                 string colname = nameOfColumnToolStripMenuItem.Text;
-                string filtert = textToolStripMenuItem.Text;
-                BindingSource filter = new BindingSource();
-                filter.DataSource = dataGridView1.Columns[colname];
-                //filter.Filter = colname + " Like " + filtert;
-                if (filtert == "")
+                string[] filtert = textToolStripMenuItem.Text.Split(';');
+                //BindingSource filter = new BindingSource();
+                //filter.DataSource = dataGridView1.Columns[colname];
+                ////filter.Filter = colname + " Like " + filtert;
+                //if (filtert == "")
+                //{
+                //    filter.Filter = String.Empty;
+                //}
+                //else
+                //{
+                //    filter.Filter = colname + " Like '%" + filtert + "%'";
+                //}
+
+                ////DataSet ds = new DataSet();
+                ////ds = ((DataSet)(dataGridView1.DataSource));
+                ////DataSet deT = (DataSet)(dataGridView1.DataSource);
+                ////DataView dv = ds.Tables[0].DefaultView;
+                ////dv.RowFilter = string.Format("country LIKE '%{0}%'", filtert);
+                ////dataGridView1.DataSource = dv;
+
+                ////(dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format(""+colname+" = '{0}'", filtert);
+
+                //dataGridView1.DataSource = filter;
+                AhoCorasik act = FindSubstring(filtert);
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    filter.Filter = String.Empty;
+                    if (filtert!=null && act.find((string)(dataGridView1.Rows[i].Cells[dataGridView1.Columns[colname].Index].Value)).size() == 0)
+                    {
+                        dataGridView1.Rows[i].Visible = false;
+                        flag = false;
+                        continue;
+                    }
+                    dataGridView1.Rows[i].Visible = true;
+                    flag = false;
+                    
                 }
-                else
-                {
-                    filter.Filter = colname + " LIKE '%" + filtert + "%'";
-                }
-
-                //DataSet ds = new DataSet();
-                //ds = ((DataSet)(dataGridView1.DataSource));
-                //DataSet deT = (DataSet)(dataGridView1.DataSource);
-                //DataView dv = ds.Tables[0].DefaultView;
-                //dv.RowFilter = string.Format("country LIKE '%{0}%'", filtert);
-                //dataGridView1.DataSource = dv;
-
-                //(dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format("Field = '{0}'", filtert);
-
-                dataGridView1.DataSource = filter;
             }
             catch(Exception ex)
             {
-                DropExWindow("Проверьте правильность введённых полей\n" + ex.Message);
+                if(flag) DropExWindow("Проверьте правильность введённых полей\n" + ex.Message);
             }
         }
 
@@ -1082,6 +1167,11 @@ namespace GerasimenkoER_KDZ3_v2
             if (!isadded)
             {
                 dataGridView1.DataSource = null;
+            }
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                dataGridView1.Rows[i].Visible = true;
+
             }
         }
 

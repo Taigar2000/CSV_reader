@@ -14,18 +14,19 @@ namespace GerasimenkoER_KDZ3_v2
         [STAThread]
         static void Main()
         {
-            start: bool flag = false;
-            try
-            {
-                flag = false;
+            //Комменты, так как иначе она не убиваема (в самом теле также потёр все Catche для эксперимента)
+            //start: bool flag = false;
+            //try
+            //{
+            //    flag = false;
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Form1());
 
-            }
-            catch(Exception ex) { flag = true; }
-            finally { }
-            if (flag) { goto start; }
+            //}
+            //catch(Exception ex) { flag = true; }
+            //finally { }
+            //if (flag) { goto start; }
             //Application.Run(new Find());
         }
     }

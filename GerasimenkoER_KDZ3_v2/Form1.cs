@@ -45,43 +45,11 @@ namespace GerasimenkoER_KDZ3_v2
         int en { get { return d.en; } set { d.en = value; } }
         #endregion
 
-        /// <summary>
-        /// Конструктор по умолчанию
-        /// </summary>
-        public Form1()
-        {
-            InitializeComponent();
 
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            
-        }
-        
-
-
-        /// <summary>
-        /// Изменение выбранности пункта меню Поверх остальных окон и статуса Поверх остальных окон основного окна
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void overAllWindowsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            overAllWindowsToolStripMenuItem.Checked ^= true;
-            TopMost = overAllWindowsToolStripMenuItem.Checked;
-        }
-
-        /// <summary>
-        /// Загрузка файла .CSV
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-
-        
 
         #region UI
 
+        bool flagcontrol = false;
         /// <summary>
         /// Отлов нажатий клавиш
         /// </summary>
@@ -89,6 +57,22 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Control) flagcontrol = true;
+            if(!e.Control) flagcontrol = false;
+            if (e.KeyCode == Keys.O && flagcontrol)
+            {
+                openToolStripButton_Click(sender, e);
+            }
+            if (e.KeyCode == Keys.S && flagcontrol)
+            {
+                saveToolStripButton_Click(sender, e);
+            }
+            if (e.KeyCode == Keys.N && flagcontrol)
+            {
+                newToolStripMenuItem_Click(sender, e);
+            }
+
+            #region c
             //if (Frac == null || Frac.isdrawing) return;
             //if (e.KeyCode == Keys.C)
             //{
@@ -146,6 +130,7 @@ namespace GerasimenkoER_KDZ3_v2
             //    fenableformwhendrawing ^= true;
             //    DropExWindow("В чём заключается смысл Жизни: " + (fenableformwhendrawing ? "42" : "I dont know"));
             //}
+            #endregion
         }
 
         /// <summary>
@@ -616,6 +601,8 @@ namespace GerasimenkoER_KDZ3_v2
             issaved = true;
         }
 
+        #region table_edit
+
         /// <summary>
         /// Event New table
         /// </summary>
@@ -797,169 +784,7 @@ namespace GerasimenkoER_KDZ3_v2
 
         #endregion
 
-
-
-
-        #region backend
-
-        /// <summary>
-        /// Обновление таблицы
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void UpdateGrid(object sender = null, EventArgs e = null)
-        {
-            //isadded = true;
-            bool flag = false;
-            if (!isadded) { toolStripMenuItem5_Click(sender, e); flag = true; }
-            sn = en = -1;
-            int ssn=0;
-            if (sne) { if (!int.TryParse(toolStripMenuItem3.Text, out ssn) || ssn < 1) { sn = 1; DropExWindow("Uncorrect format of value \"From\" (needed>=1)"); return; } }
-            sn = ssn;
-            if (ene) { if (!int.TryParse(toolStripMenuItem4.Text, out ssn) || ssn <= sn || ssn>=data.Count) { en = data.Count-1;  DropExWindow("Uncorrect format of value \"To\" (Count of rows>needed>From)"); return; } }
-            en = ssn;
-            sn = Math.Max(sn,1);
-            if (en <= sn) { en = data.Count-1; }
-            if(data==null) { return; }
-            int maxlen = data[0].Count;
-            for(int i = sn; i < en; ++i)
-            {
-                maxlen = Math.Max(maxlen, data[i].Count);
-            }
-            dataGridView1.Columns.Clear();
-            for (int i = 0; i < maxlen; ++i)
-            {
-                string str = "";
-                if (i < data[0].Count)
-                {
-                    str = data[0][i];
-                }
-                if (data[0].Count > i) { str = data[0][i]; }
-                var column = new DataGridViewTextBoxColumn();
-                column.HeaderText = str;
-                column.Name = str;
-                column.CellTemplate = new DataGridViewTextBoxCell();
-                dataGridView1.Columns.Add(column);
-            }
-            for (int j = sn; j < en; ++j) { 
-                dataGridView1.Rows.Add(data[j].ToArray());
-            }
-            //isadded = false;
-            if (flag) { toolStripMenuItem5_Click(sender, e); flag = false; }
-            Invalidate();
-        }
-
-
-        /// <summary>
-        /// Закрытие приложения
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void Form1Closed(object sender, EventArgs e)
-        {
-            
-            
-        }
-
-        /// <summary>
-        /// Хотите ли вы продолжить и потерять изменения?
-        /// </summary>
-        /// <param name="s">Предупреждающая строка</param>
-        /// <returns>Закрыть (false) ОК (true)</returns>
-        public static bool SaveorLose(bool f=false, string s="При продолжении несохранённые данные будут потеряны.\nВы точно хотите продолжить?\n") {//Для отмены закройте это окно.
-            if (f) { return f; }
-            bool flag = MessageBox.Show(text:s,caption:"WARNING",buttons:MessageBoxButtons.OKCancel,icon:MessageBoxIcon.Warning) == DialogResult.OK;
-            return flag;
-            //return f || MessageBox.Show(s) == DialogResult.OK;
-        }
-
-
-        /// <summary>
-        /// Отлов события Закрытие программы и предложение сохранить данные или выйти из программы
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            if (datas == null || issaved)
-            {
-                Dispose();
-            }
-            else
-            {
-                if (SaveorLose(issaved))
-                {
-                    Dispose();
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Переопределение перерисовки окна
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            try
-            {
-                this.Text = name.Split('\\')[name.Split('\\').Length-1];
-                //if (datas != null) { UpdateGrid(); }
-                base.OnPaint(e);
-            }
-            catch (Exception ex)
-            {
-                DropExWindow("" + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Закрытие контекстного меню с
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ContextMenuItem_Closing(object sender, CancelEventArgs e)
-        {
-            if (IS_AUTO_UPDATE_ES) { 
-                if (encodingToolStripComboBox1.Text != "Encoding Type")
-                {
-                    //encodingToolStripComboBox1.Name
-                    encode = Encoding.GetEncoding((int)int.Parse(encodingToolStripComboBox1.Text.Split(' ')[0]));
-                }
-                if (typeToolStripMenuItem.Text != "Separator Type")
-                { //typeToolStripMenuItem.Name  
-                    separ = CSVconv.GetSeparType(typeToolStripMenuItem.Text[0]);
-                }
-            }
-            //Invalidate();
-        }
-
-        /// <summary>
-        /// Обновление номера начальной колонки
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void fromToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            sne^= true;
-            fromToolStripMenuItem.Checked = sne;
-        }
-
-        /// <summary>
-        /// Обновление номера конечной колонки
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void toToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ene ^= true;
-            toToolStripMenuItem.Checked = ene;
-        }
-
-
-        #endregion
+        #region Find
 
         /// <summary>
         /// Create AhoCorasic exemplar
@@ -1125,6 +950,8 @@ namespace GerasimenkoER_KDZ3_v2
 
             }
         }
+
+        #endregion
 
         #region Sort
 
@@ -1292,5 +1119,210 @@ namespace GerasimenkoER_KDZ3_v2
 
 
         #endregion
+
+        #endregion
+
+
+
+
+        #region backend
+
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
+        public Form1()
+        {
+            InitializeComponent();
+
+        }
+
+        /// <summary>
+        /// Load Form1
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+        
+
+
+        /// <summary>
+        /// Изменение выбранности пункта меню Поверх остальных окон и статуса Поверх остальных окон основного окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void overAllWindowsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            overAllWindowsToolStripMenuItem.Checked ^= true;
+            TopMost = overAllWindowsToolStripMenuItem.Checked;
+        }
+
+        /// <summary>
+        /// Загрузка файла .CSV
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        /// <summary>
+        /// Обновление таблицы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void UpdateGrid(object sender = null, EventArgs e = null)
+        {
+            //isadded = true;
+            bool flag = false;
+            if (!isadded) { toolStripMenuItem5_Click(sender, e); flag = true; }
+            sn = en = -1;
+            int ssn=0;
+            if (sne) { if (!int.TryParse(toolStripMenuItem3.Text, out ssn) || ssn < 1) { sn = 1; DropExWindow("Uncorrect format of value \"From\" (needed>=1)"); return; } }
+            sn = ssn;
+            if (ene) { if (!int.TryParse(toolStripMenuItem4.Text, out ssn) || ssn <= sn || ssn>=data.Count) { en = data.Count-1;  DropExWindow("Uncorrect format of value \"To\" (Count of rows>needed>From)"); return; } }
+            en = ssn;
+            sn = Math.Max(sn,1);
+            if (en <= sn) { en = data.Count-1; }
+            if(data==null) { return; }
+            int maxlen = data[0].Count;
+            for(int i = sn; i < en; ++i)
+            {
+                maxlen = Math.Max(maxlen, data[i].Count);
+            }
+            dataGridView1.Columns.Clear();
+            for (int i = 0; i < maxlen; ++i)
+            {
+                string str = "";
+                if (i < data[0].Count)
+                {
+                    str = data[0][i];
+                }
+                if (data[0].Count > i) { str = data[0][i]; }
+                var column = new DataGridViewTextBoxColumn();
+                column.HeaderText = str;
+                column.Name = str;
+                column.CellTemplate = new DataGridViewTextBoxCell();
+                dataGridView1.Columns.Add(column);
+            }
+            for (int j = sn; j < en; ++j) { 
+                dataGridView1.Rows.Add(data[j].ToArray());
+            }
+            //isadded = false;
+            if (flag) { toolStripMenuItem5_Click(sender, e); flag = false; }
+            Invalidate();
+        }
+
+
+        /// <summary>
+        /// Закрытие приложения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void Form1Closed(object sender, EventArgs e)
+        {
+            
+            
+        }
+
+        /// <summary>
+        /// Хотите ли вы продолжить и потерять изменения?
+        /// </summary>
+        /// <param name="s">Предупреждающая строка</param>
+        /// <returns>Закрыть (false) ОК (true)</returns>
+        public static bool SaveorLose(bool f=false, string s="При продолжении несохранённые данные будут потеряны.\nВы точно хотите продолжить?\n") {//Для отмены закройте это окно.
+            if (f) { return f; }
+            bool flag = MessageBox.Show(text:s,caption:"WARNING",buttons:MessageBoxButtons.OKCancel,icon:MessageBoxIcon.Warning) == DialogResult.OK;
+            return flag;
+            //return f || MessageBox.Show(s) == DialogResult.OK;
+        }
+
+
+        /// <summary>
+        /// Отлов события Закрытие программы и предложение сохранить данные или выйти из программы
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (datas == null || issaved)
+            {
+                Dispose();
+            }
+            else
+            {
+                if (SaveorLose(issaved))
+                {
+                    Dispose();
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Переопределение перерисовки окна
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            try
+            {
+                this.Text = name.Split('\\')[name.Split('\\').Length-1];
+                //if (datas != null) { UpdateGrid(); }
+                base.OnPaint(e);
+            }
+            catch (Exception ex)
+            {
+                DropExWindow("" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Закрытие контекстного меню с
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ContextMenuItem_Closing(object sender, CancelEventArgs e)
+        {
+            if (IS_AUTO_UPDATE_ES) { 
+                if (encodingToolStripComboBox1.Text != "Encoding Type")
+                {
+                    //encodingToolStripComboBox1.Name
+                    encode = Encoding.GetEncoding((int)int.Parse(encodingToolStripComboBox1.Text.Split(' ')[0]));
+                }
+                if (typeToolStripMenuItem.Text != "Separator Type")
+                { //typeToolStripMenuItem.Name  
+                    separ = CSVconv.GetSeparType(typeToolStripMenuItem.Text[0]);
+                }
+            }
+            //Invalidate();
+        }
+
+        /// <summary>
+        /// Обновление номера начальной колонки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void fromToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sne^= true;
+            fromToolStripMenuItem.Checked = sne;
+        }
+
+        /// <summary>
+        /// Обновление номера конечной колонки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ene ^= true;
+            toToolStripMenuItem.Checked = ene;
+        }
+
+
+        #endregion
+
     }
 }

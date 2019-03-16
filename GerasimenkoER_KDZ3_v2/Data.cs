@@ -15,18 +15,18 @@ namespace GerasimenkoER_KDZ3_v2
         
         int _OPOPNumber=0;
         Расположение _adress;
-        pair<string,string> Adress { get { return pair<string, string>.makepair<string, string>(adress.AdmArea, adress.District); } set { adress.AdmArea = value.first; adress.District = value.second; } }
         Phone _PublicPhone = new Phone();
         int _GLOBALID=0;
-        string ROWNUM { get { return "" + _ROWNUM; } set { int.TryParse(value, out _ROWNUM); } }
         string Name="";
+        string Address="";
+        string ExtraInfo="";
+        string X_WGS="", Y_WGS="";
+        pair<string,string> Adress { get { return pair<string, string>.makepair<string, string>(adress.AdmArea, adress.District); } set { adress.AdmArea = value.first; adress.District = value.second; } }
+        string ROWNUM { get { return "" + _ROWNUM; } set { int.TryParse(value, out _ROWNUM); } }
         string OPOPNumber { get { return "" + _OPOPNumber; } set { int.TryParse(value, out _OPOPNumber); } }
         string AdmArea { get { return adress.AdmArea; } set { adress.AdmArea = value; } }
         string District { get { return adress.District; } set { adress.District = value; } }
-        string Address="";
         string PublicPhone{ get { return _PublicPhone.get(); } set { _PublicPhone.set(value); } }
-        string ExtraInfo="";
-        string X_WGS="", Y_WGS="";
         string GLOBALID { get { return "" + _GLOBALID; } set { int.TryParse(value, out _GLOBALID); } }
 
         #endregion
@@ -151,14 +151,14 @@ namespace GerasimenkoER_KDZ3_v2
     class Data
     {
         public bool flagmb = false;
-        public string name = "";
-        public List<List<string>> data = null;
-        public string[] datas = null;
-        public char separ = ';';
         public bool rewrite = false;
         public bool issaved = true;
         public bool isaded = false;
         public bool sne = false, ene = false;
+        public string name = "";
+        public List<List<string>> data = null;
+        public string[] datas = null;
+        public char separ = ';';
         public Encoding encode = Encoding.Default;
         public int sn = 1;
         public int en = -1;

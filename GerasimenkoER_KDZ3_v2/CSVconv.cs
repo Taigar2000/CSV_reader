@@ -270,7 +270,7 @@ namespace GerasimenkoER_KDZ3_v2
         #region Converters
 
         /// <summary>
-        /// Convert form CSV line to String arr for colums
+        /// Convert form CSV line to String arr for rows
         /// </summary>
         /// <param name="s">Raw string</param>
         /// <param name="c">Separator between columns</param>
@@ -332,7 +332,7 @@ namespace GerasimenkoER_KDZ3_v2
         }
 
         /// <summary>
-        /// Convert form String arr from colums to CSV line
+        /// Convert form String arr from rows to CSV line
         /// </summary>
         /// <param name="s">List of string from colums</param>
         /// <param name="c">Separator between columns</param>

@@ -11,7 +11,7 @@ namespace GerasimenkoER_KDZ3_v2
     {
         
 
-        int NMAX = 1000;
+        //int NMAX = 1000;
 
         public AhoCorasik() { }
         public AhoCorasik(IEnumerable which, int nmax = 1000)
@@ -205,5 +205,6 @@ namespace GerasimenkoER_KDZ3_v2
                     t[v].go[c] = v == 0 ? 0 : go(get_link(v), c);
             return t[v].go[c];
         }
+
     }
 }

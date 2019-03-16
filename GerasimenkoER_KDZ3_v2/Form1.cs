@@ -1175,9 +1175,30 @@ namespace GerasimenkoER_KDZ3_v2
             }
         }
 
+        /// <summary>
+        /// Filter for selected opop's number
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (!(dataGridView1.SelectedRows.Count != 0 && data != null)) { DropExWindow("Выберите строку с ОПОП для фильтрации"); return; }
+            for(int i = 0; i < dataGridView1.Rows.Count; ++i)
+            {
+                try
+                {
+                    if (!dataGridView1.Rows[i].Visible) { continue; }
+                    bool flag = true;
+                    foreach (System.Windows.Forms.DataGridViewRow j in dataGridView1.SelectedRows) {//dataGridView1.SelectedRows[dataGridView1.SelectedRows.Count-1]
+                        if (((string)(dataGridView1.Rows[i].Cells["OPOPNumber"].Value)) == ((string)(j.Cells["OPOPNumber"].Value))) { flag = false; break; }
+                    }
+                    if (flag) { dataGridView1.Rows[i].Visible = false; }
+                }
+                catch(Exception ex) { }
+            }
+        }
 
 
         #endregion
-
     }
 }

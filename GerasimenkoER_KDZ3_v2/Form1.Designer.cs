@@ -62,6 +62,7 @@
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.columnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnNameToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripTextBox();
@@ -74,7 +75,8 @@
             this.whatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnNameToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -361,6 +363,12 @@
             this.columnToolStripMenuItem.Text = "Column";
             this.columnToolStripMenuItem.Click += new System.EventHandler(this.columnToolStripMenuItem_Click);
             // 
+            // columnNameToolStripMenuItem
+            // 
+            this.columnNameToolStripMenuItem.Name = "columnNameToolStripMenuItem";
+            this.columnNameToolStripMenuItem.Size = new System.Drawing.Size(152, 23);
+            this.columnNameToolStripMenuItem.Text = "Column name";
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -406,7 +414,9 @@
             this.nameOfColumnToolStripMenuItem,
             this.whatToolStripMenuItem,
             this.textToolStripMenuItem,
-            this.filterToolStripMenuItem});
+            this.filterToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.toolStripButton1});
             this.findToolStripMenuItem2.Name = "findToolStripMenuItem2";
             this.findToolStripMenuItem2.Size = new System.Drawing.Size(45, 25);
             this.findToolStripMenuItem2.Text = "Filter";
@@ -451,11 +461,20 @@
             this.filterToolStripMenuItem.Text = "Filter";
             this.filterToolStripMenuItem.Click += new System.EventHandler(this.filterToolStripMenuItem_Click);
             // 
-            // columnNameToolStripMenuItem
+            // toolStripButton1
             // 
-            this.columnNameToolStripMenuItem.Name = "columnNameToolStripMenuItem";
-            this.columnNameToolStripMenuItem.Size = new System.Drawing.Size(152, 23);
-            this.columnNameToolStripMenuItem.Text = "Column name";
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(163, 19);
+            this.toolStripButton1.Text = "Filter Selected OPOPNumber";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(297, 6);
             // 
             // Form1
             // 
@@ -528,6 +547,8 @@
         private System.Windows.Forms.ToolStripMenuItem filterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripTextBox columnNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

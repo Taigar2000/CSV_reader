@@ -29,7 +29,7 @@ namespace GerasimenkoER_KDZ3_v2
         //Encoding encode = Encoding.Default;
         //int sn = -1;
         //int en = -1;
-
+        #region MetoData
         bool flagmb { get { return d.flagmb; } set { d.flagmb = value; } }
         string name { get { return d.name; } set { d.name = value; } }
         List<List<string>> data { get { return d.data; } set { d.data = value; } }
@@ -43,6 +43,7 @@ namespace GerasimenkoER_KDZ3_v2
         Encoding encode { get { return d.encode; } set { d.encode = value; } }
         int sn { get { return d.sn; } set { d.sn = value; } }
         int en { get { return d.en; } set { d.en = value; } }
+        #endregion
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -537,6 +538,11 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void ReopenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            if (!SaveorLose(issaved))
+            {
+                return;
+            }
             //if (ReopenToolStripMenuItem.DropDownItems[0] != null) { //encodingToolStripComboBox1.Name
             //encode = Encoding.GetEncoding((int)int.Parse(ReopenToolStripMenuItem.DropDownItems[0].Text.Split(' ')[0]));}
             //separ = CSVconv.GetSeparType(ReopenToolStripMenuItem.DropDownItems[1].Text[0]); //typeToolStripMenuItem.Name
@@ -547,8 +553,14 @@ namespace GerasimenkoER_KDZ3_v2
             if (typeToolStripMenuItem.Text != "Separator Type") { //typeToolStripMenuItem.Name  
             separ = CSVconv.GetSeparType(typeToolStripMenuItem.Text[0]);}
             loadToolStripMenuItem_Click(sender, e, reopen);
+            issaved = false;
         }
 
+        /// <summary>
+        /// Quick load
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
             loadToolStripMenuItem_Click(sender, e);
@@ -565,9 +577,43 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!SaveorLose(issaved))
+            {
+                return;
+            }
             //if (this.Frac != null && this.Frac.isdrawing) return;
             //(new Form1()).ShowDialog(new Form1());
             dataGridView1.Rows.Clear();
+            data = new List<List<string>>();
+            data.Add(new List<string>());
+            if (dataGridView1.Columns.Count > 0)
+            {
+                for (int i = 0; i < dataGridView1.Columns.Count; ++i)
+                {
+                    data[0].Add(((string)(dataGridView1.Columns[i].HeaderText)));
+                }
+                data.Add(new List<string>());
+                for (int i = 0; i < dataGridView1.Columns.Count; ++i)
+                {
+                    data[1].Add(((string)("")));
+                }
+            }
+            else
+            {
+                int n = 1;
+                for (int i = 0; i < n; ++i)
+                {
+                    data[0].Add(((string)("")));
+                }
+                data.Add(new List<string>());
+                for (int i = 0; i < n; ++i)
+                {
+                    data[1].Add(((string)("")));
+                }
+            }
+            UpdateData(data, out opop, out adr);
+            UpdateGrid();
+            issaved = true;
         }
 
         /// <summary>
@@ -666,6 +712,43 @@ namespace GerasimenkoER_KDZ3_v2
             }
             UpdateData(data, out opop, out adr);
             int _ = 0;
+        }
+        
+        /// <summary>
+        /// Remove row from data
+        /// </summary>
+        /// <param name="d"></param>
+        int removeRowInData(DataGridViewRow d)
+        {
+            int i = 0;
+            for(i = 0; i < data.Count; ++i)
+            {
+                bool flag = true;
+                for(int j = 0; j < Math.Min(data[i].Count, d.Cells.Count); ++j)
+                {
+                    if(data[i][j]!=((string)(d.Cells[j].Value))) { flag = false; break; }
+                }
+                if (flag) {
+                    data.RemoveAt(i);
+                    List<string> datasp = datas.ToList();
+                    datasp.RemoveAt(i);
+                    datas = datasp.ToArray();
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Deleted rows event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView1_DeleteRow(object sender, DataGridViewRowEventArgs e)
+        {
+            if(!SaveorLose(false,"Вы точно хотите удалить ячейку?")) { UpdateGrid(); return; }
+            if (removeRowInData(e.Row) == -1) { DropExWindow("Not a string in data.\n Please reopen table"); }
+            UpdateData(data, out opop, out adr);
         }
 
         /// <summary>
@@ -783,7 +866,12 @@ namespace GerasimenkoER_KDZ3_v2
         /// </summary>
         /// <param name="s">Предупреждающая строка</param>
         /// <returns>Закрыть (false) ОК (true)</returns>
-        public static bool SaveorLose(bool f=false, string s="При продолжении несохранённые данные будут потеряны.\nВы точно хотите продолжить?\nДля отмены закройте жто окно.") { return f || MessageBox.Show(s) == DialogResult.OK; }
+        public static bool SaveorLose(bool f=false, string s="При продолжении несохранённые данные будут потеряны.\nВы точно хотите продолжить?\n") {//Для отмены закройте это окно.
+            if (f) { return f; }
+            bool flag = MessageBox.Show(text:s,caption:"WARNING",buttons:MessageBoxButtons.OKCancel,icon:MessageBoxIcon.Warning) == DialogResult.OK;
+            return flag;
+            //return f || MessageBox.Show(s) == DialogResult.OK;
+        }
 
 
         /// <summary>
@@ -1004,8 +1092,9 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="data"></param>
         /// <param name="opop"></param>
         /// <param name="adr"></param>
-        static void UpdateData(List<List<string>> data, out List<ОПОП> opop, out List<Расположение> adr)
+        private void UpdateData(List<List<string>> data, out List<ОПОП> opop, out List<Расположение> adr)
         {
+            issaved = false;
             opop = new List<ОПОП>();
             adr = new List<Расположение>();
             if (data[0].Count < 11) { return; }
@@ -1104,6 +1193,7 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void filterToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            issaved = false;
             bool flag = true;
             if (!isadded) {
                 DropExWindow("Для начала фильтрации установите галочку в поле Filtering");
@@ -1162,6 +1252,7 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
+            issaved = false;
             isadded ^= true;
             toolStripMenuItem5.Checked = isadded;
             if (!isadded)
@@ -1182,6 +1273,7 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            issaved = false;
             if (!(dataGridView1.SelectedRows.Count != 0 && data != null)) { DropExWindow("Выберите строку с ОПОП для фильтрации"); return; }
             for(int i = 0; i < dataGridView1.Rows.Count; ++i)
             {

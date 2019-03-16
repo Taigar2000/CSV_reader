@@ -66,7 +66,7 @@ namespace GerasimenkoER_KDZ3_v2
             {
                 openToolStripButton_Click(sender, e);
             }
-            if (e.KeyCode == Keys.S && flagcontrol)
+            if (e.KeyCode == Keys.S && flagcontrol && !flagshift)
             {
                 saveToolStripButton_Click(sender, e);
             }
@@ -294,6 +294,7 @@ namespace GerasimenkoER_KDZ3_v2
             {
                 SaveFileDialog FBD = new SaveFileDialog();
                 FBD.Filter = "CSV for EXEL files (';' *.csv)|*.csv|All files (*.*)|*.*";
+                //FBD.CreatePrompt = true;
                 if (FBD.ShowDialog() == DialogResult.OK)
                 {
                     separ = FBD.FilterIndex-1 == 0 ? ';' : ',';//FBD.FileName[FBD.FileName.Length - 1];

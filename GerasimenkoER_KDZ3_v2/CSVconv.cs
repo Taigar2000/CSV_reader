@@ -243,8 +243,12 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="s">Data from rows of table</param>
         /// <param name="c">CSV or another separator</param>
         /// <param name="rewrite">Rewrite or append</param>
-        public static void SaveStrtoCSV(string path, System.Windows.Forms.DataGridViewRowCollection s, char c = ',', bool rewrite = false, Encoding encode = null, string header= "ROWNUM;Name;OPOPNumber;AdmArea;District;Address;PublicPhone;ExtraInfo;X_WGS;Y_WGS;GLOBALID")
+        public static void SaveStrtoCSV(string path, System.Windows.Forms.DataGridViewRowCollection s, char c = ',', bool rewrite = false, Encoding encode = null, string header= "")
         {
+            if (header == "")
+            {
+                header = "ROWNUM" + c + "Name" + c + "OPOPNumber" + c + "AdmArea" + c + "District" + c + "Address" + c + "PublicPhone" + c + "ExtraInfo" + c + "X_WGS" + c + "Y_WGS" + c + "GLOBALID";
+            }
             List<string> se = new List<string>();
             se.Add(header);
             for (int i = 0; i < s.Count; i++)

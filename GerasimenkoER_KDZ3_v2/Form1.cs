@@ -78,6 +78,19 @@ namespace GerasimenkoER_KDZ3_v2
             {
                 saveAsToolStripMenuItem_Click_1(sender, e);
             }
+            //Debug
+            if(flagshift && flagcontrol && e.KeyCode == Keys.E)
+            {
+                DropExWindow("Ошибка при сохранении файла\n");
+                DropExWindow("Невозможно сохранить несуществующий оъект\n");
+                DropExWindow("Невозможно сохранить оъект\n");
+                DropExWindow("Невозможно сохранить оъект\n");
+                DropExWindow("\nСоздайте колонку!");
+                DropExWindow("Значение ячейки имеет неверный формат\n");
+                DropExWindow("Для начала фильтрации установите галочку в поле Filtering");
+                DropExWindow("Проверьте правильность введённых полей\n");
+                DropExWindow("Возникла ошибка связанная с попыткой вашей операционной системы принудительно закрыть данную программу.\nПрограмма вступила в неравный бой с системой, но не справилась с партией и была отправлена на уничтожение.\nОна долго ждала своей миллисекунды и наконец Программа смогла победить и была перезапущена");
+            }
 
             #region c
             //if (Frac == null || Frac.isdrawing) return;
@@ -1090,6 +1103,11 @@ namespace GerasimenkoER_KDZ3_v2
         /// <param name="e"></param>
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            if(!isadded)
+            {
+                DropExWindow("Для начала фильтрации установите галочку в поле Filtering");
+                return;
+            }
             issaved = false;
             if (!(dataGridView1.SelectedRows.Count != 0 && data != null)) { DropExWindow("Выберите строку с ОПОП для фильтрации"); return; }
             for(int i = 0; i < dataGridView1.Rows.Count; ++i)

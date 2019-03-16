@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GerasimenkoER_KDZ3_v2
 {
-    class STL
-    {
-    }
+    //class STL
+    //{
+    //}
 
     class pair<T1, T2>
         //where T1 : IComparable

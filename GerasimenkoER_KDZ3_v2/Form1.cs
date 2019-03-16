@@ -50,6 +50,7 @@ namespace GerasimenkoER_KDZ3_v2
         #region UI
 
         bool flagcontrol = false;
+        bool flagshift = false;
         /// <summary>
         /// Отлов нажатий клавиш
         /// </summary>
@@ -59,6 +60,8 @@ namespace GerasimenkoER_KDZ3_v2
         {
             if (e.Control) flagcontrol = true;
             if(!e.Control) flagcontrol = false;
+            if (e.Shift) flagshift = true;
+            if (!e.Shift) flagshift = false;
             if (e.KeyCode == Keys.O && flagcontrol)
             {
                 openToolStripButton_Click(sender, e);
@@ -70,6 +73,10 @@ namespace GerasimenkoER_KDZ3_v2
             if (e.KeyCode == Keys.N && flagcontrol)
             {
                 newToolStripMenuItem_Click(sender, e);
+            }
+            if (e.KeyCode == Keys.S && flagcontrol && flagshift)
+            {
+                saveAsToolStripMenuItem_Click_1(sender, e);
             }
 
             #region c
@@ -369,6 +376,18 @@ namespace GerasimenkoER_KDZ3_v2
             {
                 DropExWindow("" + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Сохранение таблицы как (новый интерфейс)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveAsToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            fileToolStripMenuItem.HideDropDown();
+            saveAsToolStripMenuItem_Click(sender, e);
+
         }
 
         /// <summary>
@@ -911,45 +930,6 @@ namespace GerasimenkoER_KDZ3_v2
             //textBox1.Text=outs.tostring("\n\r");
         }
 
-        /// <summary>
-        /// Update data of ОПОП
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="opop"></param>
-        /// <param name="adr"></param>
-        private void UpdateData(List<List<string>> data, out List<ОПОП> opop, out List<Расположение> adr)
-        {
-            issaved = false;
-            opop = new List<ОПОП>();
-            adr = new List<Расположение>();
-            if (data[0].Count < 11) { return; }
-            bool flage = true;
-            foreach (var i in data)
-            {
-                if (flage)
-                {
-                    flage = false;
-                    continue;
-                }
-                if (i.Count < 11) { continue; }
-                bool flag = true;
-                int k = 0;
-                for (; k < adr.Count; ++k)
-                {
-                    if (adr[k].AdmArea == i[3] && adr[k].District == i[4])
-                    {
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag)
-                {
-                    adr.Add(new Расположение());
-                }
-                opop.Add(new ОПОП(i, adr[k]));
-
-            }
-        }
 
         #endregion
 
@@ -1137,6 +1117,17 @@ namespace GerasimenkoER_KDZ3_v2
         }
 
         /// <summary>
+        /// Конструктор от строки
+        /// </summary>
+        public Form1(string s):this()
+        {
+            if (s != "")
+            {
+                DropExWindow(s);
+            }
+        }
+
+        /// <summary>
         /// Load Form1
         /// </summary>
         /// <param name="sender"></param>
@@ -1147,6 +1138,45 @@ namespace GerasimenkoER_KDZ3_v2
         }
         
 
+        /// <summary>
+        /// Update data of ОПОП
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="opop"></param>
+        /// <param name="adr"></param>
+        private void UpdateData(List<List<string>> data, out List<ОПОП> opop, out List<Расположение> adr)
+        {
+            issaved = false;
+            opop = new List<ОПОП>();
+            adr = new List<Расположение>();
+            if (data[0].Count < 11) { return; }
+            bool flage = true;
+            foreach (var i in data)
+            {
+                if (flage)
+                {
+                    flage = false;
+                    continue;
+                }
+                if (i.Count < 11) { continue; }
+                bool flag = true;
+                int k = 0;
+                for (; k < adr.Count; ++k)
+                {
+                    if (adr[k].AdmArea == i[3] && adr[k].District == i[4])
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    adr.Add(new Расположение());
+                }
+                opop.Add(new ОПОП(i, adr[k]));
+
+            }
+        }
 
         /// <summary>
         /// Изменение выбранности пункта меню Поверх остальных окон и статуса Поверх остальных окон основного окна
@@ -1159,11 +1189,11 @@ namespace GerasimenkoER_KDZ3_v2
             TopMost = overAllWindowsToolStripMenuItem.Checked;
         }
 
-        /// <summary>
-        /// Загрузка файла .CSV
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        ///// <summary>
+        ///// Загрузка файла .CSV
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
 
         /// <summary>
         /// Обновление таблицы
@@ -1221,7 +1251,7 @@ namespace GerasimenkoER_KDZ3_v2
         void Form1Closed(object sender, EventArgs e)
         {
             
-            
+            this.Close();
         }
 
         /// <summary>
@@ -1324,5 +1354,6 @@ namespace GerasimenkoER_KDZ3_v2
 
         #endregion
 
+        
     }
 }

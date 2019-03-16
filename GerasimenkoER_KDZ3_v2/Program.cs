@@ -16,17 +16,18 @@ namespace GerasimenkoER_KDZ3_v2
         {
             //Комменты, так как иначе она не убиваема (в самом теле также потёр все Catche для эксперимента)
             //start: bool flag = false;
+            string s = "";
             //try
             //{
             //    flag = false;
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Form1());
+                Application.Run(new Form1(s));
 
             //}
             //catch(Exception ex) { flag = true; }
             //finally { }
-            //if (flag) { goto start; }
+            //if (flag) { s="Возникла ошибка связанная с попыткой вашей операционной системы закрыть данную программу.\nПрограмма была перезапущена";goto start; }
             //Application.Run(new Find());
         }
     }

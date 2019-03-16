@@ -1,5 +1,6 @@
 //www.codeproject.com/Articles/8086/Extending-the-save-file-dialog-class-in-NET
 
+#region usings
 
 using System;
 using System.Drawing;
@@ -28,6 +29,8 @@ public partial class Form1 : System.Windows.Forms.Form
 	//}
 }
 
+#endregion
+
 //The interesting bit starts here
 
 //note the order of these is important
@@ -42,8 +45,8 @@ public enum EncodingType
 public class SaveFileDialogWithEncoding
 {
 	private delegate int OFNHookProcDelegate(int hdlg, int msg, int wParam, int lParam);
-
-	private int m_LabelHandle=0;
+    #region metodata
+    private int m_LabelHandle=0;
 	private int m_ComboHandle=0;
     private int m_FilterIndex=0;
 
@@ -172,8 +175,8 @@ public class SaveFileDialogWithEncoding
 
 	[DllImport("user32.dll")]
 	private static extern bool ScreenToClient(int hWnd, ref POINT lpPoint);
-
-	private int HookProc(int hdlg, int msg, int wParam, int lParam)
+    #endregion
+    private int HookProc(int hdlg, int msg, int wParam, int lParam)
 	{
 		switch (msg)
 		{

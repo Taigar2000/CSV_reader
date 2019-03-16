@@ -172,6 +172,7 @@
             this.ssesepToolStripMenuItem.Name = "ssesepToolStripMenuItem";
             this.ssesepToolStripMenuItem.Size = new System.Drawing.Size(204, 23);
             this.ssesepToolStripMenuItem.Text = "s;se;sep";
+            this.ssesepToolStripMenuItem.ToolTipText = "Слова через ; по которым искать";
             // 
             // findToolStripMenuItem1
             // 
@@ -207,7 +208,8 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.newToolStripMenuItem.Text = "New";
             // 
             // toolStripMenuItem1
@@ -220,7 +222,8 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem1_Click);
             // 
@@ -231,8 +234,11 @@
             this.saveAstxtToolStripMenuItem,
             this.saveDialogToolStripMenuItem});
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click_1);
             // 
             // saveAsCSVToolStripMenuItem
             // 
@@ -258,7 +264,8 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
@@ -283,6 +290,7 @@
             this.overAllWindowsToolStripMenuItem.Name = "overAllWindowsToolStripMenuItem";
             this.overAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.overAllWindowsToolStripMenuItem.Text = "Over all windows";
+            this.overAllWindowsToolStripMenuItem.ToolTipText = "Поверх остальных окон";
             this.overAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.overAllWindowsToolStripMenuItem_Click);
             // 
             // textBox1
@@ -367,9 +375,25 @@
             // 
             // columnNameToolStripMenuItem
             // 
+            this.columnNameToolStripMenuItem.AccessibleDescription = "";
+            this.columnNameToolStripMenuItem.AccessibleName = "";
+            this.columnNameToolStripMenuItem.AutoCompleteCustomSource.AddRange(new string[] {
+            "ROWNUM",
+            "Name",
+            "OPOPNumber",
+            "AdmArea",
+            "District",
+            "Address",
+            "PublicPhone",
+            "ExtraInfo",
+            "X_WGS",
+            "Y_WGS",
+            "GLOBALID"});
             this.columnNameToolStripMenuItem.Name = "columnNameToolStripMenuItem";
             this.columnNameToolStripMenuItem.Size = new System.Drawing.Size(152, 23);
+            this.columnNameToolStripMenuItem.Tag = "Название столбца";
             this.columnNameToolStripMenuItem.Text = "Column name";
+            this.columnNameToolStripMenuItem.ToolTipText = "Название столбца";
             // 
             // viewToolStripMenuItem
             // 
@@ -394,6 +418,7 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 23);
             this.toolStripMenuItem3.Text = "1";
+            this.toolStripMenuItem3.ToolTipText = "Номер строки с которой отображать";
             // 
             // toToolStripMenuItem
             // 
@@ -407,6 +432,7 @@
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(240, 23);
             this.toolStripMenuItem4.Text = "10";
+            this.toolStripMenuItem4.ToolTipText = "Номер строки до которой отображать";
             // 
             // findToolStripMenuItem2
             // 
@@ -442,6 +468,7 @@
             this.nameOfColumnToolStripMenuItem.Name = "nameOfColumnToolStripMenuItem";
             this.nameOfColumnToolStripMenuItem.Size = new System.Drawing.Size(180, 23);
             this.nameOfColumnToolStripMenuItem.Text = "Name of column";
+            this.nameOfColumnToolStripMenuItem.ToolTipText = "Название столбца по которому фильтровать";
             // 
             // whatToolStripMenuItem
             // 
@@ -455,6 +482,7 @@
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
             this.textToolStripMenuItem.Size = new System.Drawing.Size(240, 23);
             this.textToolStripMenuItem.Text = "Text";
+            this.textToolStripMenuItem.ToolTipText = "Слова через ; по которым фильтровать";
             // 
             // filterToolStripMenuItem
             // 
@@ -476,6 +504,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(163, 19);
             this.toolStripButton1.Text = "Filter Selected OPOPNumber";
+            this.toolStripButton1.ToolTipText = "Найти все строки с таким же сзначением в столбце OPOPNumber";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // Form1

@@ -345,8 +345,9 @@ namespace GerasimenkoER_KDZ3_v2
             
                 
             for(int j = 0;j < s.Count; j++)
-            {    
-                for (int i = 0; i < s[j].Length; i++)
+            {
+                if (s[j] == null) { isquote = true; }
+                for (int i = 0;s[j]!=null && i < s[j].Length; i++)
                 {
                     if (s[j][i] == '"')
                     {

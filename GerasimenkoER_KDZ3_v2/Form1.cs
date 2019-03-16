@@ -944,26 +944,35 @@ namespace GerasimenkoER_KDZ3_v2
             bool flag = true;
             try
             {
-
+                string e1 = (string)e.CellValue1;
+                string e2 = (string)e.CellValue2;
+                if (e.CellValue1 == null)
+                {
+                    e1 = "";
+                }
+                if (e.CellValue2 == null)
+                {
+                    e2 = "";
+                }
                 if (flag && (e.Column.Name == "OPOPNumber" || e.Column.Name == "GLOBALID"))
                 {
                     flag = false;
-                    int n = Math.Max(e.CellValue1.ToString().Length, e.CellValue2.ToString().Length);
-                    e.SortResult = String.Compare((int.Parse(e.CellValue1.ToString())).ToString("D" + n), (int.Parse(e.CellValue2.ToString())).ToString("D" + n));
+                    int n = Math.Max(e1.Length, e2.Length);
+                    e.SortResult = String.Compare((int.Parse(e1)).ToString("D" + n), (int.Parse(e2)).ToString("D" + n));
                 }
                 if (flag && e.Column.Name == "ROWNUM")
                 {
                     flag = false;
-                    int n = Math.Max(e.CellValue1.ToString().Length, e.CellValue2.ToString().Length);
-                    e.SortResult = String.Compare((int.Parse(e.CellValue1.ToString())).ToString("D" + n), (int.Parse(e.CellValue2.ToString())).ToString("D" + n));
+                    int n = Math.Max(e1.Length, e2.Length);
+                    e.SortResult = String.Compare((int.Parse(e1)).ToString("D" + n), (int.Parse(e2)).ToString("D" + n));
                 }
 
-                if (flag) { e.SortResult = System.String.Compare(e.CellValue1.ToString(), e.CellValue2.ToString()); }
+                if (flag) { e.SortResult = System.String.Compare(e1, e2); }
                 // If the cells are equal, sort based on the ID column.
                 if (e.SortResult == 0 && e.Column.Name != "ROWNUM")
                 {
-                    int n = Math.Max(e.CellValue1.ToString().Length, e.CellValue2.ToString().Length);
-                    e.SortResult = String.Compare((int.Parse(e.CellValue1.ToString())).ToString("D" + n), (int.Parse(e.CellValue2.ToString())).ToString("D" + n));
+                    int n = Math.Max(e1.Length, e2.Length);
+                    e.SortResult = String.Compare((int.Parse(e1)).ToString("D" + n), (int.Parse(e2)).ToString("D" + n));
                 }
                 e.Handled = true;
             }
